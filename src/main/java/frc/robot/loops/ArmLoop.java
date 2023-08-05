@@ -4,7 +4,6 @@
 
 package frc.robot.loops;
 
-import edu.wpi.first.math.controller.ArmFeedforward;
 import frc.robot.Util.OI;
 import frc.robot.subsystems.Arm;
 

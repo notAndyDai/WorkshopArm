@@ -4,6 +4,8 @@
 
 package frc.robot.Util;
 
+import edu.wpi.first.wpilibj.Preferences;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean
@@ -25,9 +27,35 @@ public final class Constants {
 
   public static final double ARM_RESET_ANGLE_DEGREES = 57;
 
-  public static final double ARM_KP = 0;
-  public static final double ARM_KD = 0;
+  public static final double ARM_DEFAULT_KP = 0;
+  public static final double ARM_DEFAULT_KI = 0;
+  public static final double ARM_DEFAULT_KD = 0;
+
+  public static double ARM_KP_TELEMETRY = ARM_DEFAULT_KP;
+  public static double ARM_KI_TELEMETRY = ARM_DEFAULT_KI;
+  public static double ARM_KD_TELEMETRY = ARM_DEFAULT_KD;
 
   // p: 0.086 i: 0.00001
+
+  public static void initTelemetry() {
+    // PID constants
+    if (!Preferences.containsKey("KP")) {
+      Preferences.initDouble("KP", ARM_KP_TELEMETRY);
+    }
+
+    if (!Preferences.containsKey("KI")) {
+      Preferences.initDouble("KI", ARM_KI_TELEMETRY);
+    }
+
+    if (!Preferences.containsKey("KD")) {
+      Preferences.initDouble("KD", ARM_KD_TELEMETRY);
+    }
+  }
+
+  public static void updateTelemetry() {
+    ARM_KP_TELEMETRY = Preferences.getDouble("KP", ARM_DEFAULT_KP);
+    ARM_KI_TELEMETRY = Preferences.getDouble("KI", ARM_DEFAULT_KI);
+    ARM_KD_TELEMETRY = Preferences.getDouble("KD", ARM_DEFAULT_KD);
+  }
 
 }

@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Util.Constants;
 
@@ -29,10 +30,11 @@ public class Arm extends SubsystemBase {
 
     homeSW = new DigitalInput(9);
 
-    angleController = new PIDController(0, 0, 0);
+    angleController = new PIDController(Constants.ARM_KP_TELEMETRY, Constants.ARM_KI_TELEMETRY,
+        Constants.ARM_KD_TELEMETRY);
   }
 
-  // motor IO
+  // Control methods
   protected void setPowerCL(double setpoint) {
     double power = angleController.calculate(getPosition(), setpoint);
     setPowerOL(power);
@@ -42,9 +44,15 @@ public class Arm extends SubsystemBase {
     pivotMotor.set(ControlMode.PercentOutput, power);
   }
 
-  protected void setPosition(double angle) {
-
+  public void setCoast() {
+    pivotMotor.setNeutralMode(NeutralMode.Coast);
   }
+
+  public void setBrake() {
+    pivotMotor.setNeutralMode(NeutralMode.Brake);
+  }
+
+  // Sensor Methods
 
   protected double getPositionRaw() {
     return pivotMotor.getSelectedSensorPosition();
@@ -58,12 +66,8 @@ public class Arm extends SubsystemBase {
     pivotMotor.setSelectedSensorPosition(angleToTicks(Constants.ARM_RESET_ANGLE_DEGREES));
   }
 
-  protected void setCoast() {
-    pivotMotor.setNeutralMode(NeutralMode.Coast);
-  }
-
-  protected void setBrake() {
-    pivotMotor.setNeutralMode(NeutralMode.Brake);
+  protected boolean atHome() {
+    return !homeSW.get();
   }
 
   // calculations
@@ -81,8 +85,14 @@ public class Arm extends SubsystemBase {
     return ticksToAngle(getPositionRaw());
   }
 
-  // limit swtich IO
-  protected boolean atHome() {
-    return !homeSW.get();
+  // PID controller config
+  public void setPID() {
+    Constants.updateTelemetry();
+    setPID(Constants.ARM_KP_TELEMETRY, Constants.ARM_KI_TELEMETRY, Constants.ARM_KD_TELEMETRY);
   }
+
+  protected void setPID(double kP, double kI, double kD) {
+    angleController.setPID(kP, kI, kD);
+  }
+
 }
