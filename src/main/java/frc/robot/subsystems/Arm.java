@@ -62,26 +62,28 @@ public class Arm extends SubsystemBase {
     pivotMotor.setSelectedSensorPosition(angleToTicks(pos));
   }
 
-  protected void resetArmPosition() {
+  public void resetArmPosition() {
     pivotMotor.setSelectedSensorPosition(angleToTicks(Constants.ARM_RESET_ANGLE_DEGREES));
   }
 
-  protected boolean atHome() {
+  public boolean atHome() {
     return !homeSW.get();
   }
 
   // calculations
 
   protected double angleToTicks(double angle) {
-    return (Constants.MOTOR_TICKS_PER_REV / 360) * angle * Constants.ARM_GEAR_RATIO;
+    return angle * Constants.TICKS_PER_DEGREE;// (Constants.MOTOR_TICKS_PER_REV / 360) * angle *
+                                              // Constants.ARM_GEAR_RATIO;
   }
 
   protected double ticksToAngle(double ticks) {
-    double angle = ticks / ((Constants.MOTOR_TICKS_PER_REV / 360) * Constants.ARM_GEAR_RATIO);
-    return angle - 0.124486 * (angle - 57);
+    // double angle = ticks / ((Constants.MOTOR_TICKS_PER_REV / 360) *
+    // Constants.ARM_GEAR_RATIO);
+    return ticks / Constants.TICKS_PER_DEGREE;// angle - 0.124486 * (angle - 57);
   }
 
-  protected double getPosition() {
+  public double getPosition() {
     return ticksToAngle(getPositionRaw());
   }
 

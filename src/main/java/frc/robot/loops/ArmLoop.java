@@ -4,6 +4,7 @@
 
 package frc.robot.loops;
 
+import frc.robot.Util.Constants;
 import frc.robot.Util.OI;
 import frc.robot.subsystems.Arm;
 
@@ -12,7 +13,7 @@ public class ArmLoop extends Arm {
 
     // Enums ඞඞ
     public enum ArmStates {
-        OPEN_LOOP, CLOSED_LOOP, DISABLED
+        OPEN_LOOP, CLOSED_LOOP, HOMING, DISABLED
     }
 
     // Variables ඞ
@@ -50,6 +51,10 @@ public class ArmLoop extends Arm {
 
             case CLOSED_LOOP:
                 setPowerCL(mSetpoint);
+                break;
+
+            case HOMING:
+                setPowerOL(Constants.HOMING_POWER);
                 break;
 
             case DISABLED:

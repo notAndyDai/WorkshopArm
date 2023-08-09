@@ -25,11 +25,14 @@ public final class Constants {
   public static final int MOTOR_TICKS_PER_REV = 2048;
   public static final double ARM_GEAR_RATIO = 129.26;
 
+  public static final double TICKS_PER_DEGREE = 674.789;
   public static final double ARM_RESET_ANGLE_DEGREES = 57;
 
   public static final double ARM_DEFAULT_KP = 0;
   public static final double ARM_DEFAULT_KI = 0;
   public static final double ARM_DEFAULT_KD = 0;
+
+  public static final double HOMING_POWER = -0.3;
 
   public static double ARM_KP_TELEMETRY = ARM_DEFAULT_KP;
   public static double ARM_KI_TELEMETRY = ARM_DEFAULT_KI;

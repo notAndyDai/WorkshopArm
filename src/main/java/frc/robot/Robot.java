@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
     robotContainer = new RobotContainer();
 
     // auto selector
-    autoSelector = new SendableChooser<Command>();
+    autoSelector = new SendableChooser<>();
     SmartDashboard.putData("Autos", autoSelector);
     autoSelector.addOption("No Auto", null);
 
